@@ -12,7 +12,7 @@ PORT="${PORT:-80}"
 echo "==> Pacchetti di sistema"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-apt-get install -y -qq git python3 python3-venv python3-pip nginx ca-certificates >/dev/null
+apt-get install -y -qq git python3 python3-venv python3-pip nginx ca-certificates curl >/dev/null
 
 echo "==> Utente di servizio"
 id -u "$APP_USER" >/dev/null 2>&1 || useradd --system --home "$APP_DIR" --shell /usr/sbin/nologin "$APP_USER"
