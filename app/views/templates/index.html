@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Le notizie di calcio che contano, in un'unica dashboard.</h1>
+  <p>Raccogliamo i feed di Gazzetta, Corriere dello Sport, Tuttosport, Sky Sport, ANSA, Google News e altri,
+     raggruppiamo le stesse storie e le ordiniamo per rilevanza.</p>
+  <p>
+    <a class="btn lg" href="{{ url_for('auth.register') }}">Crea un account</a>
+    <a class="btn ghost lg" href="{{ url_for('auth.login') }}">Accedi</a>
+  </p>
+</section>
+{% endblock %}

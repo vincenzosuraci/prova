@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Raccolte{% endblock %}
+{% block content %}
+<h1>Storico raccolte</h1>
+<table class="table">
+  <thead><tr><th>Inizio (UTC)</th><th>Durata</th><th>Avviata da</th><th>Nuove</th><th>Errori</th></tr></thead>
+  <tbody>
+  {% for r in runs %}
+    <tr>
+      <td>{{ r.started_at.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+      <td>{% if r.finished_at %}{{ ((r.finished_at - r.started_at).total_seconds())|round(1) }} s{% else %}—{% endif %}</td>
+      <td>{{ r.triggered_by }}</td>
+      <td>{{ r.new_articles }}</td>
+      <td class="errs">{% if r.errors %}{% for line in r.errors.splitlines() %}{{ line }}<br>{% endfor %}{% else %}—{% endif %}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="5">Nessuna raccolta.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

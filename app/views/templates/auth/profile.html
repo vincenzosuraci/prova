@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block title %}Profilo{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <div class="profile-head">
+    <img src="{{ current_user.foto_url }}" alt="Foto profilo" class="avatar lg">
+    <div>
+      <h2>{{ current_user.nome_completo }}</h2>
+      <p class="muted">@{{ current_user.username }} · iscritto dal {{ current_user.created_at.strftime('%d/%m/%Y') }}</p>
+    </div>
+  </div>
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row">{{ field(form.nome) }}{{ field(form.cognome) }}</div>
+    {{ field(form.email) }}
+    {{ field(form.foto, 'file') }}
+    <div class="row">{{ field(form.password) }}{{ field(form.conferma) }}</div>
+    {{ form.submit(class="btn full") }}
+  </form>
+</div>
+{% endblock %}

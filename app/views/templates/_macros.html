@@ -1,0 +1,7 @@
+{% macro field(f, type=None) %}
+  <label class="field">
+    <span>{{ f.label.text }}</span>
+    {% if type == 'file' %}{{ f(accept="image/*") }}{% else %}{{ f() }}{% endif %}
+    {% for e in f.errors %}<small class="err">{{ e }}</small>{% endfor %}
+  </label>
+{% endmacro %}

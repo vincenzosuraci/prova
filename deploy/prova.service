@@ -1,0 +1,15 @@
+[Unit]
+Description=Prova - Calcio News (gunicorn)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=prova
+Group=prova
+WorkingDirectory=/opt/prova
+ExecStart=/opt/prova/.venv/bin/gunicorn --preload --workers 3 --threads 2 --timeout 120 --bind 127.0.0.1:8000 --access-logfile - wsgi:app
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

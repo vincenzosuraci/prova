@@ -1,0 +1,12 @@
+[Unit]
+Description=Prova - raccolta notizie di calcio
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=prova
+Group=prova
+WorkingDirectory=/opt/prova
+Environment=FLASK_APP=wsgi.py
+ExecStart=/opt/prova/.venv/bin/flask collect-news
