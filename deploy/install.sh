@@ -19,8 +19,9 @@ id -u "$APP_USER" >/dev/null 2>&1 || useradd --system --home "$APP_DIR" --shell 
 
 echo "==> Codice sorgente"
 if [ -d "$APP_DIR/.git" ]; then
-  git -C "$APP_DIR" fetch -q origin "$BRANCH"
-  git -C "$APP_DIR" reset -q --hard "origin/$BRANCH"
+  # il repo appartiene all'utente di servizio: evita l'errore "dubious ownership"
+  git -c safe.directory="$APP_DIR" -C "$APP_DIR" fetch -q origin "$BRANCH"
+  git -c safe.directory="$APP_DIR" -C "$APP_DIR" reset -q --hard "origin/$BRANCH"
 else
   git clone -q -b "$BRANCH" "$REPO" "$APP_DIR"
 fi
