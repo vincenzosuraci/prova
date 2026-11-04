@@ -4,6 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Prova{% endblock %} · Calcio News</title>
+  <script>
+    // Applica il tema prima del rendering per evitare il "lampo" bianco
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <meta name="theme-color" content="#0b6e4f">
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" sizes="48x48">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -24,6 +40,7 @@
       <a href="{{ url_for('auth.login') }}">Accedi</a>
       <a class="btn" href="{{ url_for('auth.register') }}">Registrati</a>
     {% endif %}
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Cambia tema">🌙</button>
   </nav>
 </header>
 <main class="container">
@@ -32,5 +49,28 @@
   {% endwith %}
   {% block content %}{% endblock %}
 </main>
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('theme-toggle');
+    function paint() {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      btn.textContent = dark ? '☀️' : '🌙';
+      btn.title = dark ? 'Passa al tema chiaro' : 'Passa al tema scuro';
+    }
+    btn.addEventListener('click', function () {
+      var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', t);
+      try { localStorage.setItem('theme', t); } catch (e) {}
+      paint();
+    });
+    // se l'utente non ha scelto, segui i cambi del sistema operativo
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (err) {}
+      if (!saved) { root.setAttribute('data-theme', e.matches ? 'dark' : 'light'); paint(); }
+    });
+    paint();
+  })();
+</script>
 </body>
 </html>
